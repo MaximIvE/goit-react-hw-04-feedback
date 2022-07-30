@@ -1,15 +1,9 @@
+import scss from './App.module.scss';
+
 export const App = () => {
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
+    <div className={scss.app}>
+
       React homework template
     </div>
   );
