@@ -1,5 +1,6 @@
 import capitalFirstLetter from "utils/capitalFirstLetter";
 import scss from './Statistics.module.scss';
+import PropTypes from 'prop-types';
 
 export default function Statistics(props){
         return (props.total > 0
@@ -26,4 +27,12 @@ export default function Statistics(props){
                </ul>
            : 
             <p className={scss.form_message}>There is no feedback.</p>)
+}
+
+Statistics.propTypes={
+    good: PropTypes.number.isRequired,    
+    neutral: PropTypes.number.isRequired,
+    bad: PropTypes.number.isRequired,
+    total: PropTypes.number.isRequired,
+    positivePercentage: PropTypes.number.isRequired,
 }
