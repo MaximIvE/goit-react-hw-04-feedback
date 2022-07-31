@@ -1,19 +1,15 @@
 import React, {Component} from "react";
-import capitalFirstLetter from "utils/capitalFirstLetter";
+import Statistics from '../Statistics/Statistics';
+import FeedbackOptions from '../FeedbackOptions/FeedbackOptions';
+import Section from '../Section/Section';
+
 import scss from './Widget.module.scss';
-import clap from '../../sound/clap.wav'
 
 export default class Widget extends Component{
     state = {
         good: 0,
         neutral: 0,
         bad: 0
-    }
-
-    sound(){
-    const audio = new Audio(clap);
-    audio.volume = 0.075;
-    audio.play();
     }
 
     handleChange = e => {
@@ -38,40 +34,21 @@ export default class Widget extends Component{
     render(){
         return (
             <div className={scss.widget}>
-                <div className={scss.form_element}>
-                    Please leave feedback
-                    <ul className={scss.btn_list}>
-                        {Object.keys(this.state)
-                        .map(key=>
-                        <button 
-                            key={key} 
-                            type='button' 
-                            name={key} 
-                            className={scss.btn_feedback}
-                            onMouseDown={this.sound}
-                            onClick={this.handleChange}>
-                                {capitalFirstLetter(key)}
-                        </button>)}
-                    </ul>
-                </div>
-                {this.total() > 0
-                 ? 
-                <div className={scss.form_element}>
-                    Statistics
-                    <ul className={scss.statistic_list}>
-                        {Object.keys(this.state)
-                        .map(key=>
-                        <li 
-                            key={key}>
-                                {capitalFirstLetter(key)}: {this.state[key]}
-                        </li>)}
-
-                       <li style={{paddingTop: 12}}>Total: {this.total()}</li>
-                       <li>Positive feedback: {this.percentages() === 0 ? 0 : this.percentages()+"%"}</li>
-                    </ul>
-                </div>
-                 : 
-                 <p className={scss.form_message}>There is no feedback.</p>}
+                <Section title="Please leave feedback">
+                    <FeedbackOptions 
+                        options={this.state} 
+                        onLeaveFeedback={this.handleChange}
+                    />
+                </Section>
+                <Section title="Statistic">
+                    <Statistics 
+                        good={this.state.good} 
+                        neutral={this.state.neutral} 
+                        bad={this.state.bad} 
+                        total={this.total()} 
+                        positivePercentage={this.percentages()}
+                    />
+                </Section>
             </div>
         )
     }
