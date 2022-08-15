@@ -4,6 +4,7 @@ import capitalFirstLetter from 'utils/capitalFirstLetter';
 import sound from 'utils/sound';
 
 export default function FeedbackOptions({options, onLeaveFeedback}){
+    // console.log("FeedbackOptions");
     return (
     <ul className={scss.btn_list}>
         {Object.keys(options).map(key=>

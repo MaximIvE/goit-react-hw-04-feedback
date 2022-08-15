@@ -1,55 +1,52 @@
-import React, {Component} from "react";
+import React from "react";
 import Statistics from '../Statistics/Statistics';
 import FeedbackOptions from '../FeedbackOptions/FeedbackOptions';
 import Section from '../Section/Section';
+import { useState } from "react";
 
 import scss from './Widget.module.scss';
 
-export default class Widget extends Component{
-    state = {
-        good: 0,
-        neutral: 0,
-        bad: 0
-    }
+const Widget = () => {
+    const [state, setState] = useState({good: 0, neutral: 0, bad: 0,});
 
-    handleChange = e => {
+    const handleChange = e => {
     const {name} = e.target;
-    this.setState((prevState) => {return{[name]: prevState[name]+1};});
-    }
+    setState((prevState) => {return{...prevState, [name]: prevState[name]+1};});
+    };
 
-    percentages(){
-        const {good, bad} = this.state;
+    function percentages(){
+        const {good, bad} = state;
         if (bad === 0) {
             if (good === 0) return 0
             else return 100;
         };
         return (Math.round(good*10000 / (good + bad)) / 100);
-    }
+    };
 
-    total(){
-        const {good, bad, neutral} = this.state; 
+    function total(){
+        const {good, neutral, bad}=state;
         return good + bad + neutral;
-    }
+    };
 
-    render(){
-        return (
-            <div className={scss.widget}>
-                <Section title="Please leave feedback">
-                    <FeedbackOptions 
-                        options={this.state} 
-                        onLeaveFeedback={this.handleChange}
-                    />
-                </Section>
-                <Section title="Statistic">
-                    <Statistics 
-                        good={this.state.good} 
-                        neutral={this.state.neutral} 
-                        bad={this.state.bad} 
-                        total={this.total()} 
-                        positivePercentage={this.percentages()}
-                    />
-                </Section>
-            </div>
-        )
-    }
+    return (
+        <div className={scss.widget}>
+            <Section title="Please leave feedback">
+                <FeedbackOptions 
+                    options= {state}
+                    onLeaveFeedback={handleChange}
+                />
+            </Section>
+            <Section title="Statistic">
+                <Statistics 
+                    good={state.good} 
+                    neutral={state.neutral} 
+                    bad={state.bad} 
+                    total={total()} 
+                    positivePercentage={percentages()}
+                />
+            </Section>
+        </div>
+    )
 }
+
+export default Widget;
